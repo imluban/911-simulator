@@ -164,7 +164,14 @@
   function planeSizeRatio() {
     return W <= MOBILE_BREAKPOINT ? PLANE_SIZE_MOBILE : PLANE_SIZE_DESKTOP;
   }
-  const TOWER_WIDTH_RATIO = 0.15;
+  const TOWER_WIDTH_DESKTOP = 0.15;  // tower width relative to screen width, on larger screens
+  const TOWER_WIDTH_MOBILE = 0.27;   // tower width relative to screen width, on small/mobile screens
+
+  // Tower width is picked live off the current width, same breakpoint as the
+  // plane, so rotating a device or resizing a window switches sizes automatically.
+  function towerWidthRatio() {
+    return W <= MOBILE_BREAKPOINT ? TOWER_WIDTH_MOBILE : TOWER_WIDTH_DESKTOP;
+  }
   const BASE_GAP_RATIO = 0.32;  // gap size relative to height
   const MIN_GAP_RATIO = 0.24;
   const BASE_SPEED = 220;       // px/s scroll speed
@@ -466,7 +473,7 @@
   }
 
   function spawnTower(xPos) {
-    const towerWidth = W * TOWER_WIDTH_RATIO;
+    const towerWidth = W * towerWidthRatio();
     const gapH = H * currentGapRatio();
     const margin = H * 0.08;
     const minGapY = margin + gapH / 2;
