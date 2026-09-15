@@ -69,6 +69,7 @@
   const towerTopAsset = loadImage(ASSET_PATHS.towerTop);
   const towerBottomAsset = loadImage(ASSET_PATHS.towerBottom);
   const skylineAsset = loadImage('assets/skyline.png');
+  const skylineFrontAsset = loadImage('assets/skyline.png');
 
   // ---------- Audio (simple WebAudio synthesized SFX) ----------
   let audioCtx = null;
@@ -165,7 +166,7 @@
     return W <= MOBILE_BREAKPOINT ? PLANE_SIZE_MOBILE : PLANE_SIZE_DESKTOP;
   }
   const TOWER_WIDTH_DESKTOP = 0.15;  // tower width relative to screen width, on larger screens
-  const TOWER_WIDTH_MOBILE = 0.27;   // tower width relative to screen width, on small/mobile screens
+  const TOWER_WIDTH_MOBILE = 0.30;   // tower width relative to screen width, on small/mobile screens
 
   // Tower width is picked live off the current width, same breakpoint as the
   // plane, so rotating a device or resizing a window switches sizes automatically.
@@ -195,8 +196,12 @@
   let plane, towers, score, elapsed, spawnTimer, holding, lastTime;
   let clouds = [];
   let skylineScrollX = 0;
-  const SKYLINE_PARALLAX = 0.35; // scrolls slower than towers for a depth feel
+  const SKYLINE_PARALLAX = 0.35; // scrolls slower than towers for a depth feel (far background)
   const SKYLINE_HEIGHT_RATIO = 0.16; // band height relative to screen height
+
+  let skylineFrontScrollX = 0;
+  const SKYLINE_FRONT_PARALLAX = 1.4; // scrolls faster than towers — closer foreground layer
+  const SKYLINE_FRONT_HEIGHT_RATIO = 0.20; // a bit taller since it reads as "closer"
 
   // ---------- Crash / blast effect ----------
   let particles = [];
@@ -457,6 +462,7 @@
     scoreHud.textContent = '0';
     initClouds();
     skylineScrollX = 0;
+    skylineFrontScrollX = 0;
     particles = [];
     explosionTimer = 0;
     shakeTime = 0;
@@ -679,6 +685,7 @@
     const speed = currentSpeed();
 
     skylineScrollX += speed * SKYLINE_PARALLAX * dt;
+    skylineFrontScrollX += speed * SKYLINE_FRONT_PARALLAX * dt;
 
     // Move towers
     for (const t of towers) {
@@ -925,23 +932,31 @@
     ctx.restore();
   }
 
-  function drawSkyline() {
-    const img = skylineAsset.img;
-    if (!skylineAsset.loaded || img.naturalWidth === 0) return;
+  function drawSkylineLayer(asset, scrollX, heightRatio) {
+    const img = asset.img;
+    if (!asset.loaded || img.naturalWidth === 0) return;
 
-    const bandH = H * SKYLINE_HEIGHT_RATIO;
+    const bandH = H * heightRatio;
     const aspect = img.naturalWidth / img.naturalHeight;
     const tileW = bandH * aspect;
     const y = H - bandH;
 
     // Continuous leftward tiling: figure out where the first tile should
     // start so the repeating band has no visible seam or gap.
-    const offset = -(skylineScrollX % tileW);
+    const offset = -(scrollX % tileW);
     let x = offset;
     if (x > 0) x -= tileW;
     for (; x < W; x += tileW) {
       ctx.drawImage(img, x, y, tileW, bandH);
     }
+  }
+
+  function drawSkyline() {
+    drawSkylineLayer(skylineAsset, skylineScrollX, SKYLINE_HEIGHT_RATIO);
+  }
+
+  function drawSkylineFront() {
+    drawSkylineLayer(skylineFrontAsset, skylineFrontScrollX, SKYLINE_FRONT_HEIGHT_RATIO);
   }
 
   function draw() {
@@ -957,14 +972,18 @@
 
     if (state === 'playing') {
       for (const t of towers) drawTower(t);
+      drawSkylineFront();
       drawPlane();
     } else if (state === 'exploding') {
       for (const t of towers) drawTower(t);
+      drawSkylineFront();
       drawExplosion();
     } else if (state === 'gameover') {
       for (const t of towers) drawTower(t);
+      drawSkylineFront();
       drawExplosion(); // lingering dust/debris keep fading behind the Game Over screen
     } else {
+      drawSkylineFront();
       // Idle preview plane on start screen
       if (!plane) {
         plane = { x: W * PLANE_X_RATIO, y: H * 0.45, vy: 0, rotation: 0 };
