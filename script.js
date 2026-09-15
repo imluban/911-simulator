@@ -166,7 +166,7 @@
     return W <= MOBILE_BREAKPOINT ? PLANE_SIZE_MOBILE : PLANE_SIZE_DESKTOP;
   }
   const TOWER_WIDTH_DESKTOP = 0.15;  // tower width relative to screen width, on larger screens
-  const TOWER_WIDTH_MOBILE = 0.30;   // tower width relative to screen width, on small/mobile screens
+  const TOWER_WIDTH_MOBILE = 0.35;   // tower width relative to screen width, on small/mobile screens
 
   // Tower width is picked live off the current width, same breakpoint as the
   // plane, so rotating a device or resizing a window switches sizes automatically.
@@ -200,8 +200,8 @@
   const SKYLINE_HEIGHT_RATIO = 0.16; // band height relative to screen height
 
   let skylineFrontScrollX = 0;
-  const SKYLINE_FRONT_PARALLAX = 1.4; // scrolls faster than towers — closer foreground layer
-  const SKYLINE_FRONT_HEIGHT_RATIO = 0.20; // a bit taller since it reads as "closer"
+  const SKYLINE_FRONT_PARALLAX = 1.1; // scrolls faster than towers — closer foreground layer
+  const SKYLINE_FRONT_HEIGHT_RATIO = 0.12; // a bit taller since it reads as "closer"
 
   // ---------- Crash / blast effect ----------
   let particles = [];
