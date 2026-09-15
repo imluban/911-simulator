@@ -150,15 +150,23 @@
   }
 
   // ---------- Game constants ----------
-  const GRAVITY = 1300;         // px/s^2
-  const LIFT = -3200;           // px/s^2 while holding
-  const MAX_FALL_SPEED = 520;
-  const MAX_RISE_SPEED = -620;
+  const GRAVITY = 1500;         // px/s^2
+  const LIFT = -3600;           // px/s^2 while holding
+  const MAX_FALL_SPEED = 620;
+  const MAX_RISE_SPEED = -520;
   const PLANE_X_RATIO = 0.28;   // plane's horizontal position as ratio of width
-  const PLANE_SIZE = 0.052;     // plane size relative to width
-  const TOWER_WIDTH_RATIO = 0.25;
-  const BASE_GAP_RATIO = 0.42;  // gap size relative to height
-  const MIN_GAP_RATIO = 0.32;
+  const PLANE_SIZE_DESKTOP = 0.052;  // plane size relative to width, on larger screens
+  const PLANE_SIZE_MOBILE = 0.085;   // plane size relative to width, on small/mobile screens
+  const MOBILE_BREAKPOINT = 700;     // px — screens at or below this width count as "mobile"
+
+  // Plane is drawn/collided using this ratio, picked live off the current width
+  // so rotating a device or resizing a window switches sizes automatically.
+  function planeSizeRatio() {
+    return W <= MOBILE_BREAKPOINT ? PLANE_SIZE_MOBILE : PLANE_SIZE_DESKTOP;
+  }
+  const TOWER_WIDTH_RATIO = 0.15;
+  const BASE_GAP_RATIO = 0.32;  // gap size relative to height
+  const MIN_GAP_RATIO = 0.24;
   const BASE_SPEED = 220;       // px/s scroll speed
   const MAX_SPEED = 420;
   const SPEED_RAMP_TIME = 45;   // seconds to reach near-max speed
@@ -690,7 +698,7 @@
     }
 
     // Collision & scoring
-    const planeR = W * PLANE_SIZE * 0.42;
+    const planeR = W * planeSizeRatio() * 0.42;
     const planeTop = plane.y - planeR * 0.55;
     const planeBottom = plane.y + planeR * 0.55;
     const planeLeft = plane.x - planeR * 0.9;
@@ -815,7 +823,7 @@
   }
 
   function drawPlaneVector() {
-    const size = W * PLANE_SIZE;
+    const size = W * planeSizeRatio();
     ctx.save();
     ctx.translate(plane.x, plane.y);
     ctx.rotate(plane.rotation);
@@ -896,7 +904,7 @@
       return;
     }
     const img = planeAsset.img;
-    const size = W * PLANE_SIZE;
+    const size = W * planeSizeRatio();
     // Fit the image inside a box roughly matching the vector plane's footprint,
     // preserving its own aspect ratio (assumes the artwork faces right, nose right).
     const aspect = img.naturalWidth / img.naturalHeight;
@@ -937,22 +945,19 @@
     }
 
     drawSky();
+    drawSkyline();
     for (const c of clouds) drawCloud(c);
 
     if (state === 'playing') {
       for (const t of towers) drawTower(t);
-      drawSkyline();
       drawPlane();
     } else if (state === 'exploding') {
       for (const t of towers) drawTower(t);
-      drawSkyline();
       drawExplosion();
     } else if (state === 'gameover') {
       for (const t of towers) drawTower(t);
-      drawSkyline();
       drawExplosion(); // lingering dust/debris keep fading behind the Game Over screen
     } else {
-      drawSkyline();
       // Idle preview plane on start screen
       if (!plane) {
         plane = { x: W * PLANE_X_RATIO, y: H * 0.45, vy: 0, rotation: 0 };
