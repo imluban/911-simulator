@@ -196,12 +196,13 @@
   let plane, towers, score, elapsed, spawnTimer, holding, lastTime;
   let clouds = [];
   let skylineScrollX = 0;
+  const SKYLINE_OPACITY = 0.42; // alpha for the skyline layer, so it reads as "far away"
   const SKYLINE_PARALLAX = 0.35; // scrolls slower than towers for a depth feel (far background)
   const SKYLINE_HEIGHT_RATIO = 0.16; // band height relative to screen height
 
   let skylineFrontScrollX = 0;
   const SKYLINE_FRONT_PARALLAX = 1.1; // scrolls faster than towers — closer foreground layer
-  const SKYLINE_FRONT_HEIGHT_RATIO = 0.12; // a bit taller since it reads as "closer"
+  const SKYLINE_FRONT_HEIGHT_RATIO = 0.10; // a bit taller since it reads as "closer"
 
   // ---------- Crash / blast effect ----------
   let particles = [];
