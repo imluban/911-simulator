@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -11,7 +13,7 @@ html, body {
   height: 100%;
   overflow: hidden;
   background: #4fa8e0;
-  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  font-family: 'Cormorant Garamond', 'Segoe UI', Arial, Helvetica, sans-serif;
   touch-action: manipulation;
 }
 
@@ -36,11 +38,12 @@ html, body {
   top: 24px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 48px;
-  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  font-size: 44px;
+  font-weight: 600;
   color: #ffffff;
   text-shadow: 0 2px 6px rgba(0,0,0,0.35), 0 0 2px rgba(0,0,0,0.25);
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   pointer-events: none;
   z-index: 5;
 }
@@ -67,22 +70,31 @@ html, body {
 }
 
 .title {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
   font-size: clamp(32px, 8vw, 56px);
   color: #ffffff;
-  letter-spacing: 3px;
+  letter-spacing: 6px;
   text-shadow: 0 3px 8px rgba(0,0,0,0.4);
   margin-bottom: 8px;
 }
 
 .subtitle {
-  font-size: clamp(14px, 3vw, 18px);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(15px, 3vw, 19px);
   color: #eaf4ff;
+  letter-spacing: 0.4px;
   margin-bottom: 40px;
   opacity: 0.9;
 }
 
 .prompt {
-  font-size: clamp(16px, 4vw, 22px);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: clamp(17px, 4vw, 23px);
+  letter-spacing: 1px;
   color: #ffffff;
   background: rgba(0,0,0,0.35);
   padding: 12px 24px;
@@ -92,9 +104,37 @@ html, body {
 
 .best-line {
   margin-top: 26px;
-  font-size: 15px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.5px;
   color: #ffffff;
   opacity: 0.85;
+}
+
+.credits {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: #ffe4a8;
+}
+
+.credits a {
+  color: rgb(106, 7, 7);
+  text-decoration: none;
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.credits a:hover,
+.credits a:focus-visible {
+  color: #ffe4a8;
 }
 
 @keyframes pulse {
@@ -103,7 +143,10 @@ html, body {
 }
 
 .crash-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
   font-size: clamp(22px, 6vw, 34px);
+  letter-spacing: 2px;
   color: #ffffff;
   text-shadow: 0 3px 8px rgba(0,0,0,0.45);
   margin-bottom: 26px;
@@ -119,15 +162,19 @@ html, body {
 }
 
 .score-box p {
+  font-family: 'Cormorant Garamond', serif;
   color: #ffffff;
-  font-size: 20px;
+  font-size: 21px;
+  letter-spacing: 0.5px;
   margin: 4px 0;
   font-weight: 600;
 }
 
 #retryBtn {
-  font-size: 18px;
-  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
   color: #1b4a72;
   background: #ffffff;
   border: none;
